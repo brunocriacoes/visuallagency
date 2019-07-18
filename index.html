@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./src/css/style.css">
+    <script src="https://use.fontawesome.com/c8b5c26106.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="app" >
+        <nav class="nav">
+            <div class="nav__logo" @click.prevent="callPin">Logo</div>
+            <div class="nav__item">
+                <!-- <a v-bind:href="item.link" v-for="item in menuLink"> {{ item.text }} </a><br> -->
+                <my-menu 
+                    
+                    :link="item.link" 
+                    :value="item.text" 
+                    :key="item.text" 
+                    v-for="item in menuLink" 
+                ></my-menu>
+
+            </div>
+            <div class="nav__info">
+                <div class="nav__info_item">
+                    <i class="fa fa-user-o" aria-hidden="true"></i>
+                    <span>{{ userSession.perfil.nome }}</span>
+                    <i></i>
+                    <div class="nav__info_item__drop_down">
+                        <a href="" @click.prevent="callPopup" >
+                            <icone name="sign-out"></icone>
+                            FINALIZAR SEÇÃO
+                        </a>
+                    </div>
+                </div>
+                <div class="nav__info_item">
+                    <i class="fa fa-comment-o" aria-hidden="true"></i>
+                    <span>Notificações</span>
+                    <i class="nav__info_item__notification">{{ notificacao.filter( el => el.status ).length || 0 }}</i>
+                    <div class="nav__info_item__drop_down">
+                        <b v-for="news in notificacao" v-if="news.status">
+                            {{ news.text }}
+                            
+                            <i class="fa fa-trash-o" aria-hidden="true" v-on:click.prevent="apagaNews( news.id )"></i> 
+                        </b>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <pre>{{log}}</pre>  
+              
+        <section class="form__section">
+            <h1 class="page__title">Meu Perfil</h1>
+            <div class="form__section__wrapped tbs">
+                <span class="form__section__tabs">
+                    <label for="tab-perfil" @click="tabSet('pessoal')" :class="tabActive('pessoal')">Pessoal</label>
+                    <label for="tab-banco" @click="tabSet('banco')" :class="tabActive('banco')">Banco</label>
+                </span>
+    
+                <input type="radio" name="tabs" checked id="tab-perfil" hidden>
+                <div id="content_1">
+                    <form action="">
+                        <div class="btn__editar">
+                            <button class="btn btn__edit" v-on:click.prevent="disabled( 'pefil' )" v-if="!state.pefil"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</button>
+                            <button class="btn btn__edit" v-on:click.prevent="disabled( 'pefil' ); save(); addNew( 'atualizado pefil' )"  v-if="state.pefil"> <i class="fa fa-save" aria-hidden="true"></i> Salvar</button>
+                        </div>
+                        <h4>USUÁRIO</h4>
+                        <div class="grid_2">
+                            <div>
+                                <label for="">Nome</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.autenticacao.nome" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.autenticacao.nome}} </span>
+                            </div>
+                            <div>
+                                <label for="">Email</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.autenticacao.email" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.autenticacao.email}} </span>
+                            </div>
+                        </div>
+                        <h4>PESSOAL</h4>
+                        <div class="grid_3">
+                            <div>
+                                <label for="">Nome</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.perfil.nome" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.perfil.nome}} </span>
+                            </div>
+                            <div>
+                                <label for="">Sobre nome</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.perfil.sobreNome" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.perfil.sobreNome}} </span>
+                            </div>
+                            <div>
+                                <label for="">Data de nascimento</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.perfil.dataNascimento" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.perfil.dataNascimento}} </span>
+                            </div>
+                            <div>
+                                <label for="">telefone</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.perfil.telefone" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.perfil.telefone}} </span>
+                            </div>
+                            <div>
+                                <label for="">
+                                    cpf
+                                    <span tooltip="Obrigatorio">?</span>
+                                </label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.perfil.cpf" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.perfil.cpf}} </span>
+                            </div> 
+                        </div>
+                        <h4>ENDEREÇO</h4>
+                        <div class="grid_3">
+                            <div>
+                                <label for="">logadouro</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.endereco.logadouro" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.endereco.logadouro}} </span>
+                            </div>
+                            <div>
+                                <label for="">cidade</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.endereco.cidade" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.endereco.cidade}} </span>
+                            </div>
+                            <div>
+                                <label for="">estado</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.endereco.estado" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.endereco.estado}} </span>
+                            </div>                            
+                        </div>
+                        <h4>Documentos</h4>
+                        <div class="grid_4">
+                            <div>
+                                <label for="">rgFrente</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.documentos.rgFrente" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.documentos.rgFrente}} </span>
+                            </div>                 
+                            <div>
+                                <label for="">rgVerso</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.documentos.rgVerso" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.documentos.rgVerso}} </span>
+                            </div>                 
+                            <div>
+                                <label for="">foto</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.documentos.foto" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.documentos.foto}} </span>
+                            </div>                 
+                            <div>
+                                <label for="">comprovanteEnredeco</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.documentos.comprovanteEnredeco" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.documentos.comprovanteEnredeco}} </span>
+                            </div>                 
+                        </div>
+                        <h4>Redes</h4>
+                        <div class="grid_4">
+                            <div>
+                                <label for="">twitter</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.rede.twitter" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.rede.twitter}} </span>
+                            </div>                 
+                            <div>
+                                <label for="">facebook</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.rede.facebook" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.rede.facebook}} </span>
+                            </div>                 
+                            <div>
+                                <label for="">instagram</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.rede.instagram" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.rede.instagram}} </span>
+                            </div>                 
+                            <div>
+                                <label for="">linkedin</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="userSession.rede.linkedin" v-if="state.pefil" >
+                                <span v-if="!state.pefil"> {{userSession.rede.linkedin}} </span>
+                            </div>                 
+                        </div>
+                    </form>
+                </div>
+    
+                <input type="radio" name="tabs" id="tab-banco" hidden>
+                <div id="content_2">
+                    <h1>INFORMAÇÕES BANCÁRIAS</h1>
+                    <form action="" class="form__branco" v-for="banco in userSession.banco">
+
+                        <div class="btn__editar">
+                            <button class="btn btn__edit" v-on:click.prevent="editBanco( banco.id )"  v-if="!banco.edit"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</button>
+                            <button class="btn btn__edit" v-on:click.prevent="editBanco( banco.id ); save(); addNew( 'atualizado banco' )"  v-if="banco.edit"><i class="fa fa-save" aria-hidden="true"></i> Salvar</button> 
+                        </div>
+
+                        <div class="grid_3">
+                            <div>
+                                <label for="">Tipo</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="banco.tipoConta" v-if="banco.edit" >
+                                <span v-if="!banco.edit"> {{banco.tipoConta}} </span>
+                            </div>   
+                            <div>
+                                <label for="">Banco</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="banco.banco" v-if="banco.edit" >
+                                <span v-if="!banco.edit"> {{banco.banco}} </span>
+                            </div>   
+                            <div>
+                                <label for="">Pais</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="banco.pais" v-if="banco.edit" >
+                                <span v-if="!banco.edit"> {{banco.pais}} </span>
+                            </div>   
+                            <div>
+                                <label for="">
+                                    Agência
+                                    <span class="tool" tooltip="Mensagem" >?</span>
+                                </label>
+                                <input type="text" placeholder="Digite aqui..." v-model="banco.agencia" v-if="banco.edit" >
+                                <span v-if="!banco.edit"> {{banco.agencia}} </span>
+                            </div>   
+                            <div>
+                                <label for="">Conta</label>
+                                <input type="text" placeholder="Digite aqui..." v-model="banco.conta" v-if="banco.edit" >
+                                <span v-if="!banco.edit"> {{banco.conta}} </span>
+                            </div>   
+                            <div>
+                                <label for="">
+                                    Digito
+                                    <span class="tool" tooltip="Mensagem" >?</span>
+                                </label>
+                                <input type="text" placeholder="Digite aqui..." v-model="banco.digito" v-if="banco.edit" >
+                                <span v-if="!banco.edit"> {{banco.digito}} </span>
+                            </div>
+                        </div>
+                    </form>
+                    <button class="btn btn__edit" v-on:click.prevent="addBanco(); addNew( 'Novo banco Add' )"><i class="fa fa-plus" aria-hidden="true"></i> Adicionar</button>
+                </div>
+    
+            </div>
+        </section>
+
+        <div v-if="popup" class="popup">
+            <div>
+                <i @click="callPopup">x</i>
+                <b> FINALIZAR </b>
+                <p> Eu quero finalizar minha sessão </p>
+                <span class="btn__popup">
+                    <span @click="callPopup"> CANCELAR </span>
+                    <span @click="callPopup"> OK </span>
+                </span>
+            </div>
+        </div>
+
+        <div class="popup popup__pin"  v-if="state.pin">
+            <div>
+                <h3>IFORME SEU PIN</h3>
+                <p>PIN</p>
+                <form action="">
+                    <input type="password" v-model="pin" disabled>
+                </form>
+                <div>
+                    <btn value="1" key="1"></btn>
+                    <btn value="2" key="2"></btn>
+                    <btn value="3" key="3"></btn>
+                    <btn value="4" key="4"></btn>
+                    <btn value="5" key="5"></btn>
+                    <btn value="6" key="6"></btn>
+                    <btn value="7" key="7"></btn>
+                    <btn value="8" key="8"></btn>
+                    <btn value="9" key="9"></btn>
+                    <btn value="X" key="X"></btn>
+                    <btn value="0" key="0"></btn>
+                    <btn value="<-" key="<-"></btn>
+                </div>
+                <span class="btn__popup">
+                    <span @click="callPin"> <i class="fa fa-arrow-left" aria-hidden="true"></i>  VOLTAR </span>
+                    <span @click="callPin">  CONTINUAR <i class="fa fa-arrow-right" aria-hidden="true"></i> </span>
+                </span>
+            </div>
+        </div>
+        
+
+    </div>   
+
+    <script src="./src/js/functions.js"></script>
+    <script src="./src/js/vue.js"></script>
+    <script src="./src/component/menu.js"></script>
+    <script src="./src/component/button.js"></script>
+    <script src="./src/component/icone.js"></script>
+    <script src="./src/js/main.js"></script>
+
+</body>
+
+</html>

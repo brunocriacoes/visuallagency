@@ -1,0 +1,355 @@
+* {
+    margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+:root {
+    --tema: #1B242D;
+    --text: #7B94A3;
+    --shadow: 2px 7px 7px 5px rgba(0, 0, 0, .5);
+    --radio: 5px;
+}
+
+body {
+    background: #1B242D;
+    font-family: 'Roboto', sans-serif;
+}
+
+.nav {
+    display: grid;
+    grid-template-columns: 300px 1fr 300px;
+    align-items: center;
+    justify-items: center;
+    background: #1B242D;
+    width: 100%;
+    height: 80px;
+    border-bottom: 5px solid #131821;
+}
+
+.nav__logo {
+    color: #37D6AA;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+.nav__item a {
+    font-size: 14px;
+    color: #7B94A3;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+.nav__item a:hover {
+    color: #37D6AA;
+}
+
+.nav__info {
+    color: #7B94A3;
+}
+
+.nav__info {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    width: 100%;
+    align-items: center;
+}
+
+.nav__info_item:hover {
+    color: #37D6AA;
+}
+
+.nav__info_item {
+    position: relative;
+    height: 70px;
+    display: grid;
+    grid-template-columns: 20px 1fr 20px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.nav__info_item__notification {
+    position: absolute;
+    color: #37D6AA;
+    left: 12px;
+    top: 10px;
+}
+
+.nav__info_item__drop_down {
+    display: none;
+    position: absolute;
+    top: 70px;
+    right: 0;
+    font-size: 12px;
+    color: var(--text);
+    width: 200px;
+    z-index: 999999999;
+}
+.nav__info_item__drop_down a {
+    color: var(--text);
+    text-decoration: none;
+    border-radius: var(--radio);
+    box-shadow: var(--shadow);
+    padding: 12px;
+    cursor: pointer;
+}
+.nav__info_item__drop_down b {
+    color: var(--text);
+    text-decoration: none;
+    border-radius: var(--radio);
+    box-shadow: var(--shadow);
+    padding: 12px;
+    cursor: pointer;
+}
+
+[tooltip] {
+    position: relative;
+}
+.tool {
+    width: 16px;
+    height: 16px;
+    border-radius: 50px;
+    background: var(--text);
+    color: #FFF;
+    font-size: 11px;
+}
+[tooltip]:hover::after {
+    display: inline-block;
+    content: attr(tooltip);
+    padding: 10px 20px;
+    background: var(--text);
+    color: #FFF;
+    box-shadow: 2px 7px 7px 5px rgba(0, 0, 0, .5);
+    position: absolute;
+    top: -20px;
+    margin-left: 10px;
+    border-radius: 4px;
+    width: 170px;
+    font-size: 12px;
+}
+[tooltip]:hover::before {
+    display: block;
+    width: 18px;
+    height: 18px;
+    content: "";
+    background: var(--text);
+    color: #FFF;
+    box-shadow: none;
+    position: absolute;
+    top: 0px;
+    right: -21px;
+    z-index: 999;
+    border-radius: 2px;
+    transform: rotate(45deg);
+}
+
+.nav__info_item__drop_down b{
+    display: grid;
+    grid-template-columns: 1fr 10px;
+    grid-row-gap: 30px;
+}
+.nav__info_item:hover > .nav__info_item__drop_down {
+    display: grid;
+    color: #7B94A3;
+    padding: 10px;
+}
+
+.form__section {
+    margin-top: 10px;
+}
+
+.form__section__wrapped {
+    width: 80VW;
+    margin: 0 auto;
+    color: #fff;
+}
+
+.tbs > div{
+    display: none;
+}
+.tbs > input:checked + div {
+    display: block;
+}
+
+.form__section__tabs {
+    display: block;
+    border-bottom: 1px solid #7B94A3;
+    color: #7B94A3;
+    margin-bottom: 20px;
+}
+.form__section__tabs label {
+    display: inline-block;
+    padding: 20px;
+    margin-bottom: -2px;
+}
+.form__section__tabs label.ativo {
+    border-bottom: 4px solid var(--text);
+}
+.page__title {
+    display: block;
+    text-align: center;
+    font-size: 38px;
+    font-weight: lighter;
+    color: #37D6AA;
+}
+h4 {
+    display: block;
+    padding: 20px 0;
+    font-size: 18px;
+    font-weight: lighter;
+}
+form input {
+    width: 100%;
+    background: transparent;
+    border: 0px solid transparent;
+    border-bottom: 1px solid var(--text);
+    color: #7B94A3;
+    display: block;
+    outline: none;
+    margin-bottom: 20px;
+    line-height: 40px;
+}
+
+form input:focus {
+    border-bottom: 2px solid #7B94A3;
+}
+form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: lighter;
+}
+form span {
+    color: var(--text);
+    line-height: 40px;
+}
+.grid_2,
+.grid_3,
+.grid_4 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 30px;
+}
+.grid_3 {  grid-template-columns: repeat(3, 1fr); }
+.grid_4 {  grid-template-columns: repeat(4, 1fr); }
+
+.btn {
+    color: #7B94A3;
+    background: transparent;
+    border: 1px solid #7B94A3;
+    border-radius: 6px;
+    
+}
+.btn__edit {
+    padding: 3px 20px;
+    font-size: 14px;
+    font-weight: lighter;
+    z-index: -1;
+}
+.popup {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, .95);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+.popup > div {
+    background: var(--tema);
+    padding: 20px;
+    color: var(--text);
+    border-radius: 5px;
+    position: relative;
+    box-shadow: var(--shadow)
+}
+.popup__pin > div {
+    width: 320px;
+    max-width: 95vw;
+    background: var(--tema);
+    padding: 20px;
+    color: var(--text);
+    border-radius: 5px;
+    position: relative;
+    box-shadow: var(--shadow)
+}
+.popup > div > i {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+.popup > div > b {
+    display: block;
+    color: #FFF;
+    font-weight: lighter;
+    margin-bottom: 15px;
+}
+.popup > div > h3 {
+    font-weight: lighter;
+    text-align: center;
+    margin: 20px 0px;
+}
+.popup > div > p {
+   font-size: 11px;
+}
+.popup > div [disabled] {
+   border-bottom: 1px solid var(--text);
+   display: block;
+   width: 100%;
+}
+.popup > div > div {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    width: 170px;
+    margin: 0 auto;
+}
+.popup > div > div > button {
+   border: 1px solid transparent;
+   display: block;
+   width: 100%;
+   background: rgba(255, 255, 255, .05);
+   color: var(--text);
+   padding: 15px;
+   cursor: pointer;
+}
+.popup > div > div > button:hover {
+   border: 1px solid var(--text);
+}
+.popup > div > div > button:active {
+   background: var(--text);
+   color: var(--tema);
+}
+.btn__popup {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    text-align: center;
+    grid-column-gap: 20px;
+    margin-top: 20px;
+}
+.btn__popup > span {
+    display: block;
+    padding: 10px;
+    border: 1px solid var(--text);
+    font-size: 12px;
+    border-radius: var(--radio);
+    cursor: pointer;
+}
+.btn__popup > span:hover{
+    background: var(--text);
+    color: var(--tema);
+}
+.btn__editar {
+    display: block;
+    text-align: right;
+}
+.form__branco {
+    display: block;
+    padding: 30px 0;
+    border-bottom: 1px solid var(--text);
+    margin-bottom: 30px;
+}
